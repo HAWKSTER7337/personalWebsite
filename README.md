@@ -29,12 +29,12 @@ npm run dev
 
 ## Features
 
-- ⚡ Vite for fast development and building
-- ⚛️ React 18 with modern hooks
-- 🎨 CSS with dark/light mode support
-- 🔧 ESLint and Prettier for code quality
-- 🐳 DevContainer for consistent development environment
-- 📱 Responsive design
+- Vite for fast development and building
+- React 18 with modern hooks
+- CSS with dark/light mode support
+- ESLint and Prettier for code quality
+- DevContainer for consistent development environment
+- Responsive design
 
 ## Project Structure
 
@@ -49,5 +49,3 @@ npm run dev
 ├── package.json      # Dependencies and scripts
 └── vite.config.js    # Vite configuration
 ```
-
-Happy coding! 🚀
