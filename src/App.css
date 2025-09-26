@@ -53,8 +53,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="code" width="20" height="20" patternUnits="userSpaceOnUse"><text x="10" y="15" font-family="monospace" font-size="8" fill="%2300ff88" opacity="0.1">01</text></pattern></defs><rect width="100" height="100" fill="url(%23code)"/></svg>');
-  animation: codeFlow 20s linear infinite;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><pattern id="code" width="200" height="200" patternUnits="userSpaceOnUse"><text x="10" y="20" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011</text><text x="10" y="40" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000</text><text x="10" y="60" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100</text><text x="10" y="80" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111</text><text x="10" y="100" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000</text><text x="10" y="120" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001</text><text x="10" y="140" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001</text><text x="10" y="160" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001</text><text x="10" y="180" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101</text></pattern></defs><rect width="200" height="200" fill="url(%23code)"/></svg>');
+  animation: codeFlow 15s linear infinite;
 }
 
 .michigan-shape {
@@ -106,15 +106,49 @@
   line-height: 1.2;
 }
 
-.hero-title .name {
-  display: block;
+.name-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.1em;
+}
+
+.name-letter {
+  display: inline-block;
   color: white;
   text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-  animation: slideInLeft 1s ease-out 0.3s both;
   background: linear-gradient(45deg, #00ff88, #0088ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-size: inherit;
+  font-weight: inherit;
+  transition: all 0.3s ease;
+  position: relative;
+  animation: slideInLeft 1s ease-out 0.3s both;
+}
+
+.name-letter:hover {
+  transform: scale(1.2);
+  text-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+}
+
+.name-letter.sorting {
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: pulse 0.5s ease-in-out;
+}
+
+.name-letter.comparing {
+  background: linear-gradient(45deg, #ffd93d, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
 }
 
 .hero-title .title {
@@ -183,6 +217,85 @@
   border-top: none;
   border-left: none;
   transform: rotate(45deg);
+}
+
+/* Sorting Controls */
+.sorting-controls {
+  margin-top: 3rem;
+  text-align: center;
+  animation: fadeIn 1s ease-out 2s both;
+}
+
+.sorting-controls h3 {
+  color: #00ff88;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.algorithm-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.algorithm-btn {
+  background: rgba(0, 136, 255, 0.1);
+  color: #0088ff;
+  border: 2px solid rgba(0, 136, 255, 0.3);
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 180px;
+}
+
+.algorithm-btn:hover:not(:disabled) {
+  background: rgba(0, 136, 255, 0.2);
+  border-color: rgba(0, 136, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.algorithm-btn.active {
+  background: linear-gradient(45deg, #00ff88, #0088ff);
+  color: #0a0a0a;
+  border-color: #00ff88;
+  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+}
+
+.algorithm-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.start-sort-btn {
+  background: linear-gradient(45deg, #00ff88, #0088ff);
+  color: #0a0a0a;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.start-sort-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 255, 136, 0.4);
+}
+
+.start-sort-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* About Section */
@@ -1084,5 +1197,14 @@
 
   .contact-card {
     padding: 2rem;
+  }
+
+  .algorithm-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .algorithm-btn {
+    min-width: 200px;
   }
 }

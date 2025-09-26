@@ -1,6 +1,238 @@
 import './App.css'
+import { useEffect, useState, useCallback } from 'react'
 
 function App() {
+  const [sortingAlgorithm, setSortingAlgorithm] = useState('merge')
+  const [isSorting, setIsSorting] = useState(false)
+
+  // Sorting algorithms implementation
+  const letters = document.querySelectorAll('.name-letter')
+  const correctOrder = [
+    'A',
+    'l',
+    'e',
+    'x',
+    ' ',
+    'H',
+    'a',
+    'w',
+    'k',
+    'i',
+    'n',
+    's',
+  ]
+
+  const shuffleArray = (array) => {
+    const shuffled = [...array]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    return shuffled
+  }
+
+  const updateVisualPositions = async (currentOrder) => {
+    letters.forEach((letter) => {
+      const letterValue = letter.dataset.letter
+      const currentPosition = currentOrder.indexOf(letterValue)
+      if (currentPosition !== -1) {
+        letter.style.order = currentPosition
+      }
+    })
+  }
+
+  const highlightLetters = (letter1, letter2) => {
+    letters.forEach((letter) => {
+      letter.classList.remove('comparing')
+      if (
+        letter.dataset.letter === letter1 ||
+        letter.dataset.letter === letter2
+      ) {
+        letter.classList.add('comparing')
+      }
+    })
+  }
+
+  const clearHighlights = () => {
+    letters.forEach((letter) => {
+      letter.classList.remove('comparing', 'sorting')
+    })
+  }
+
+  // Merge Sort (O(n log n))
+  const mergeSort = async (arr) => {
+    if (arr.length <= 1) return arr
+
+    const mid = Math.floor(arr.length / 2)
+    const left = arr.slice(0, mid)
+    const right = arr.slice(mid)
+
+    const sortedLeft = await mergeSort(left)
+    const sortedRight = await mergeSort(right)
+
+    return await merge(sortedLeft, sortedRight)
+  }
+
+  const merge = async (left, right) => {
+    const result = []
+    let leftIndex = 0
+    let rightIndex = 0
+
+    while (leftIndex < left.length && rightIndex < right.length) {
+      const leftLetter = left[leftIndex]
+      const rightLetter = right[rightIndex]
+
+      highlightLetters(leftLetter, rightLetter)
+      await new Promise((resolve) => setTimeout(resolve, 200))
+
+      const leftCorrectPos = correctOrder.indexOf(leftLetter)
+      const rightCorrectPos = correctOrder.indexOf(rightLetter)
+
+      if (leftCorrectPos <= rightCorrectPos) {
+        result.push(leftLetter)
+        leftIndex++
+      } else {
+        result.push(rightLetter)
+        rightIndex++
+      }
+
+      await updateVisualPositions(result)
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      clearHighlights()
+    }
+
+    while (leftIndex < left.length) {
+      result.push(left[leftIndex])
+      leftIndex++
+      await updateVisualPositions(result)
+      await new Promise((resolve) => setTimeout(resolve, 100))
+    }
+
+    while (rightIndex < right.length) {
+      result.push(right[rightIndex])
+      rightIndex++
+      await updateVisualPositions(result)
+      await new Promise((resolve) => setTimeout(resolve, 100))
+    }
+
+    return result
+  }
+
+  // Bubble Sort (O(n²))
+  const bubbleSort = async (arr) => {
+    const n = arr.length
+    const sorted = [...arr]
+
+    for (let i = 0; i < n - 1; i++) {
+      for (let j = 0; j < n - i - 1; j++) {
+        const leftLetter = sorted[j]
+        const rightLetter = sorted[j + 1]
+
+        highlightLetters(leftLetter, rightLetter)
+        await new Promise((resolve) => setTimeout(resolve, 300))
+
+        const leftCorrectPos = correctOrder.indexOf(leftLetter)
+        const rightCorrectPos = correctOrder.indexOf(rightLetter)
+
+        if (leftCorrectPos > rightCorrectPos) {
+          // Swap
+          ;[sorted[j], sorted[j + 1]] = [sorted[j + 1], sorted[j]]
+        }
+
+        await updateVisualPositions(sorted)
+        await new Promise((resolve) => setTimeout(resolve, 200))
+        clearHighlights()
+      }
+    }
+
+    return sorted
+  }
+
+  // Selection Sort (O(n²)) - I'll use this instead of binary search as it's a proper sorting algorithm
+  const selectionSort = async (arr) => {
+    const sorted = [...arr]
+
+    for (let i = 0; i < sorted.length; i++) {
+      let minIndex = i
+
+      for (let j = i + 1; j < sorted.length; j++) {
+        const currentLetter = sorted[j]
+        const minLetter = sorted[minIndex]
+
+        highlightLetters(currentLetter, minLetter)
+        await new Promise((resolve) => setTimeout(resolve, 200))
+
+        const currentCorrectPos = correctOrder.indexOf(currentLetter)
+        const minCorrectPos = correctOrder.indexOf(minLetter)
+
+        if (currentCorrectPos < minCorrectPos) {
+          minIndex = j
+        }
+
+        await updateVisualPositions(sorted)
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        clearHighlights()
+      }
+
+      if (minIndex !== i) {
+        ;[sorted[i], sorted[minIndex]] = [sorted[minIndex], sorted[i]]
+        await updateVisualPositions(sorted)
+        await new Promise((resolve) => setTimeout(resolve, 200))
+      }
+    }
+
+    return sorted
+  }
+
+  const startSorting = async () => {
+    if (isSorting) return
+
+    setIsSorting(true)
+    clearHighlights()
+
+    // Initial shuffle
+    const shuffledOrder = shuffleArray(correctOrder)
+    await updateVisualPositions(shuffledOrder)
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
+    switch (sortingAlgorithm) {
+      case 'merge':
+        await mergeSort(shuffledOrder)
+        break
+      case 'bubble':
+        await bubbleSort(shuffledOrder)
+        break
+      case 'selection':
+        await selectionSort(shuffledOrder)
+        break
+      default:
+        await mergeSort(shuffledOrder)
+    }
+
+    // Celebration effect
+    letters.forEach((letter, index) => {
+      setTimeout(() => {
+        letter.classList.add('sorting')
+        setTimeout(() => {
+          letter.classList.remove('sorting')
+        }, 500)
+      }, index * 100)
+    })
+
+    setIsSorting(false)
+  }
+
+  useEffect(() => {
+    // Auto-start with merge sort (fastest) on page load
+    const autoStart = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      if (!isSorting) {
+        startSorting()
+      }
+    }
+    autoStart()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className="App">
       {/* Hero Section */}
@@ -15,7 +247,44 @@ function App() {
             <span className="badge-location">Shelby Township, MI</span>
           </div>
           <h1 className="hero-title">
-            <span className="name">Alex Hawkins</span>
+            <div className="name-container">
+              <span className="name-letter" data-letter="A">
+                A
+              </span>
+              <span className="name-letter" data-letter="l">
+                l
+              </span>
+              <span className="name-letter" data-letter="e">
+                e
+              </span>
+              <span className="name-letter" data-letter="x">
+                x
+              </span>
+              <span className="name-letter" data-letter=" ">
+                {' '}
+              </span>
+              <span className="name-letter" data-letter="H">
+                H
+              </span>
+              <span className="name-letter" data-letter="a">
+                a
+              </span>
+              <span className="name-letter" data-letter="w">
+                w
+              </span>
+              <span className="name-letter" data-letter="k">
+                k
+              </span>
+              <span className="name-letter" data-letter="i">
+                i
+              </span>
+              <span className="name-letter" data-letter="n">
+                n
+              </span>
+              <span className="name-letter" data-letter="s">
+                s
+              </span>
+            </div>
             <span className="title">Junior Software Developer</span>
           </h1>
           <div className="hero-subtitle">
@@ -25,6 +294,40 @@ function App() {
             <span className="hero-tag">Architecture</span>
             <span className="hero-tag">DevOps</span>
             <span className="hero-tag">Automation</span>
+          </div>
+
+          <div className="sorting-controls">
+            <h3>Choose Sorting Algorithm:</h3>
+            <div className="algorithm-buttons">
+              <button
+                className={`algorithm-btn ${sortingAlgorithm === 'merge' ? 'active' : ''}`}
+                onClick={() => setSortingAlgorithm('merge')}
+                disabled={isSorting}
+              >
+                Merge Sort (O(n log n))
+              </button>
+              <button
+                className={`algorithm-btn ${sortingAlgorithm === 'bubble' ? 'active' : ''}`}
+                onClick={() => setSortingAlgorithm('bubble')}
+                disabled={isSorting}
+              >
+                Bubble Sort (O(n²))
+              </button>
+              <button
+                className={`algorithm-btn ${sortingAlgorithm === 'selection' ? 'active' : ''}`}
+                onClick={() => setSortingAlgorithm('selection')}
+                disabled={isSorting}
+              >
+                Selection Sort (O(n²))
+              </button>
+            </div>
+            <button
+              className="start-sort-btn"
+              onClick={() => startSorting()}
+              disabled={isSorting}
+            >
+              {isSorting ? 'Sorting...' : 'Start Sort'}
+            </button>
           </div>
         </div>
         <div className="scroll-indicator">
