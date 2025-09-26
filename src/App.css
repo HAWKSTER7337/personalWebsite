@@ -234,11 +234,68 @@
 }
 
 .algorithm-buttons {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
-  flex-wrap: wrap;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Responsive adjustments for algorithm buttons */
+@media (max-width: 1200px) {
+  .algorithm-buttons {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .algorithm-buttons {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .algorithm-buttons {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .algorithm-btn {
+    padding: 0.7rem 1rem;
+    font-size: 0.8rem;
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .algorithm-buttons {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  .algorithm-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.75rem;
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .algorithm-buttons {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  .algorithm-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.75rem;
+    min-width: auto;
+    width: 100%;
+  }
 }
 
 .algorithm-btn {
@@ -271,6 +328,132 @@
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
+}
+
+.algorithm-btn[data-algorithm='bogo'] {
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+  border-color: rgba(255, 107, 107, 0.3);
+  animation: bogoPulse 2s ease-in-out infinite;
+}
+
+.algorithm-btn[data-algorithm='bogo']:hover:not(:disabled) {
+  background: rgba(255, 107, 107, 0.2);
+  border-color: rgba(255, 107, 107, 0.5);
+}
+
+.algorithm-btn[data-algorithm='bogo'].active {
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+  color: #0a0a0a;
+  border-color: #ff6b6b;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+@keyframes bogoPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* Odds Message */
+.odds-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid #ff6b6b;
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  z-index: 10;
+  animation: oddsAppear 0.5s ease-out;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+}
+
+.odds-message p {
+  color: #ff6b6b;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+.odds-message p:first-child {
+  color: #00ff88;
+  font-size: 1.2rem;
+}
+
+.odds-message p:last-child {
+  color: #ffd93d;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+@keyframes oddsAppear {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Responsive adjustments for sorting controls */
+@media (max-width: 768px) {
+  .sorting-controls {
+    margin-top: 2rem;
+  }
+
+  .sorting-controls h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .start-sort-btn {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sorting-controls {
+    margin-top: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .sorting-controls h3 {
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .start-sort-btn {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .odds-message {
+    max-width: 90%;
+    padding: 1.5rem;
+    margin: 0 1rem;
+  }
+
+  .odds-message p {
+    font-size: 1rem;
+  }
+
+  .odds-message p:first-child {
+    font-size: 1.1rem;
+  }
 }
 
 .start-sort-btn {
@@ -1200,8 +1383,8 @@
   }
 
   .algorithm-buttons {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: 1fr;
+    max-width: 300px;
   }
 
   .algorithm-btn {

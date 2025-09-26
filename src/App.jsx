@@ -1,12 +1,11 @@
 import './App.css'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 
 function App() {
   const [sortingAlgorithm, setSortingAlgorithm] = useState('merge')
   const [isSorting, setIsSorting] = useState(false)
 
   // Sorting algorithms implementation
-  const letters = document.querySelectorAll('.name-letter')
   const correctOrder = [
     'A',
     'l',
@@ -32,7 +31,8 @@ function App() {
   }
 
   const updateVisualPositions = async (currentOrder) => {
-    letters.forEach((letter) => {
+    const currentLetters = document.querySelectorAll('.name-letter')
+    currentLetters.forEach((letter) => {
       const letterValue = letter.dataset.letter
       const currentPosition = currentOrder.indexOf(letterValue)
       if (currentPosition !== -1) {
@@ -42,7 +42,8 @@ function App() {
   }
 
   const highlightLetters = (letter1, letter2) => {
-    letters.forEach((letter) => {
+    const currentLetters = document.querySelectorAll('.name-letter')
+    currentLetters.forEach((letter) => {
       letter.classList.remove('comparing')
       if (
         letter.dataset.letter === letter1 ||
@@ -54,7 +55,8 @@ function App() {
   }
 
   const clearHighlights = () => {
-    letters.forEach((letter) => {
+    const currentLetters = document.querySelectorAll('.name-letter')
+    currentLetters.forEach((letter) => {
       letter.classList.remove('comparing', 'sorting')
     })
   }
@@ -184,29 +186,199 @@ function App() {
     return sorted
   }
 
+  // Quick Sort (O(n log n) average, O(n²) worst case)
+  const quickSort = async (arr, low = 0, high = arr.length - 1) => {
+    if (low < high) {
+      const pivotIndex = await partition(arr, low, high)
+      await quickSort(arr, low, pivotIndex - 1)
+      await quickSort(arr, pivotIndex + 1, high)
+    }
+    return arr
+  }
+
+  const partition = async (arr, low, high) => {
+    const pivot = arr[high]
+    let i = low - 1
+
+    for (let j = low; j < high; j++) {
+      const currentLetter = arr[j]
+      const pivotLetter = pivot
+
+      highlightLetters(currentLetter, pivotLetter)
+      await new Promise((resolve) => setTimeout(resolve, 250))
+
+      const currentCorrectPos = correctOrder.indexOf(currentLetter)
+      const pivotCorrectPos = correctOrder.indexOf(pivotLetter)
+
+      if (currentCorrectPos <= pivotCorrectPos) {
+        i++
+        ;[arr[i], arr[j]] = [arr[j], arr[i]]
+        await updateVisualPositions(arr)
+        await new Promise((resolve) => setTimeout(resolve, 150))
+      }
+
+      clearHighlights()
+    }
+
+    ;[arr[i + 1], arr[high]] = [arr[high], arr[i + 1]]
+    await updateVisualPositions(arr)
+    await new Promise((resolve) => setTimeout(resolve, 200))
+
+    return i + 1
+  }
+
+  // Bogo Sort (O(n!) - extremely inefficient but fun!)
+  const bogoSort = async (arr) => {
+    const sorted = [...arr]
+    let attempts = 0
+    const magicAttempts = 10 // Always succeed after 10 attempts for demo purposes
+
+    // Note: isSorted function is kept for potential future use
+    // const isSorted = (array) => {
+    //   for (let i = 0; i < array.length - 1; i++) {
+    //     const currentPos = correctOrder.indexOf(array[i])
+    //     const nextPos = correctOrder.indexOf(array[i + 1])
+    //     if (currentPos > nextPos) {
+    //       return false
+    //     }
+    //   }
+    //   return true
+    // }
+
+    const shuffle = (array) => {
+      const shuffled = [...array]
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+      }
+      return shuffled
+    }
+
+    // Calculate the actual odds for 12 letters (including space)
+    const factorial = (n) => {
+      if (n <= 1) return 1
+      return n * factorial(n - 1)
+    }
+    const totalPermutations = factorial(12) // 12! = 479,001,600
+
+    while (attempts < magicAttempts) {
+      attempts++
+
+      // Show the current attempt
+      const shuffled = shuffle(sorted)
+
+      // Highlight all letters during shuffle
+      const currentLetters = document.querySelectorAll('.name-letter')
+      currentLetters.forEach((letter) => {
+        letter.classList.add('comparing')
+      })
+
+      await new Promise((resolve) => setTimeout(resolve, 100))
+
+      // Update positions
+      for (let i = 0; i < shuffled.length; i++) {
+        sorted[i] = shuffled[i]
+      }
+
+      await updateVisualPositions(sorted)
+      await new Promise((resolve) => setTimeout(resolve, 200))
+
+      // Clear highlights
+      clearHighlights()
+
+      // Add some excitement with random highlighting
+      if (attempts % 3 === 0) {
+        const randomLetters = sorted.slice(0, 3)
+        randomLetters.forEach((letter, index) => {
+          setTimeout(() => {
+            const letterElement = Array.from(currentLetters).find(
+              (l) => l.dataset.letter === letter
+            )
+            if (letterElement) {
+              letterElement.classList.add('sorting')
+              setTimeout(() => {
+                letterElement.classList.remove('sorting')
+              }, 300)
+            }
+          }, index * 100)
+        })
+        await new Promise((resolve) => setTimeout(resolve, 500))
+      }
+    }
+
+    // After 10 attempts, "magically" sort it correctly
+    for (let i = 0; i < correctOrder.length; i++) {
+      sorted[i] = correctOrder[i]
+    }
+    await updateVisualPositions(sorted)
+
+    // Show the odds message
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    // Create and show the odds message
+    const oddsMessage = document.createElement('div')
+    oddsMessage.className = 'odds-message'
+    oddsMessage.innerHTML = `
+      <p>Wow! Sorted on the 10th try — odds of that are 1 in ${totalPermutations.toLocaleString()}.</p>
+      <p>Technically, that makes it the fastest sort we've seen so far.</p>
+      <p>Which means it's ready for production. Obviously.</p>
+
+    `
+
+    const heroContent = document.querySelector('.hero-content')
+    heroContent.appendChild(oddsMessage)
+
+    // Remove the message after 5 seconds
+    setTimeout(() => {
+      if (oddsMessage.parentNode) {
+        oddsMessage.parentNode.removeChild(oddsMessage)
+      }
+    }, 5000)
+
+    return sorted
+  }
+
   const startSorting = async () => {
     if (isSorting) return
+
+    // Get fresh reference to letters in case DOM has changed
+    const currentLetters = document.querySelectorAll('.name-letter')
+    if (currentLetters.length === 0) {
+      console.log('No letter elements found, cannot start sorting')
+      return
+    }
 
     setIsSorting(true)
     clearHighlights()
 
-    // Initial shuffle
+    // Always start with a fresh shuffle for manual sorting
     const shuffledOrder = shuffleArray(correctOrder)
     await updateVisualPositions(shuffledOrder)
     await new Promise((resolve) => setTimeout(resolve, 500))
 
+    await performSorting(shuffledOrder, currentLetters)
+    setIsSorting(false)
+  }
+
+  const performSorting = async (orderToSort, letters) => {
     switch (sortingAlgorithm) {
       case 'merge':
-        await mergeSort(shuffledOrder)
+        await mergeSort(orderToSort)
         break
       case 'bubble':
-        await bubbleSort(shuffledOrder)
+        await bubbleSort(orderToSort)
         break
       case 'selection':
-        await selectionSort(shuffledOrder)
+        await selectionSort(orderToSort)
+        break
+      case 'quick':
+        await quickSort(orderToSort)
+        break
+      case 'bogo':
+        await bogoSort(orderToSort)
         break
       default:
-        await mergeSort(shuffledOrder)
+        await mergeSort(orderToSort)
     }
 
     // Celebration effect
@@ -218,16 +390,40 @@ function App() {
         }, 500)
       }, index * 100)
     })
-
-    setIsSorting(false)
   }
 
   useEffect(() => {
     // Auto-start with merge sort (fastest) on page load
     const autoStart = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      if (!isSorting) {
-        startSorting()
+      // Wait for DOM to be ready and give extra time for elements to render
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+
+      // Check if elements exist before trying to sort
+      const letters = document.querySelectorAll('.name-letter')
+      if (letters.length > 0 && !isSorting) {
+        console.log('Auto-starting merge sort...')
+
+        // First, shuffle the letters to show unsorted state
+        const shuffledOrder = shuffleArray(correctOrder)
+        await updateVisualPositions(shuffledOrder)
+
+        // Wait a moment to show the unsorted state
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+
+        // Then start the sorting animation (use current shuffled state)
+        const currentLetters = document.querySelectorAll('.name-letter')
+        setIsSorting(true)
+        clearHighlights()
+        await performSorting(shuffledOrder, currentLetters)
+        setIsSorting(false)
+      } else {
+        console.log('Elements not ready or already sorting, retrying...')
+        // Retry after another delay
+        setTimeout(() => {
+          if (!isSorting) {
+            startSorting()
+          }
+        }, 1000)
       }
     }
     autoStart()
@@ -319,6 +515,21 @@ function App() {
                 disabled={isSorting}
               >
                 Selection Sort (O(n²))
+              </button>
+              <button
+                className={`algorithm-btn ${sortingAlgorithm === 'quick' ? 'active' : ''}`}
+                onClick={() => setSortingAlgorithm('quick')}
+                disabled={isSorting}
+              >
+                Quick Sort (O(n log n))
+              </button>
+              <button
+                className={`algorithm-btn ${sortingAlgorithm === 'bogo' ? 'active' : ''}`}
+                onClick={() => setSortingAlgorithm('bogo')}
+                disabled={isSorting}
+                data-algorithm="bogo"
+              >
+                Bogo Sort (O(n!))
               </button>
             </div>
             <button
