@@ -4,6 +4,27 @@ import { useEffect, useState } from 'react'
 function App() {
   const [sortingAlgorithm, setSortingAlgorithm] = useState('merge')
   const [isSorting, setIsSorting] = useState(false)
+  const [ticketNumbers, setTicketNumbers] = useState(['1', '4', '5'])
+  const [isWinning, setIsWinning] = useState(false)
+
+  // Lottery animation logic
+  useEffect(() => {
+    const lotteryNumbers = [
+      ['1', '4', '5'], // 145 - no match
+      ['9', '8', '7'], // 987 - no match
+      ['8', '4', '5'], // 845 - match!
+    ]
+
+    let currentIndex = 0
+
+    const interval = setInterval(() => {
+      currentIndex = (currentIndex + 1) % lotteryNumbers.length
+      setTicketNumbers(lotteryNumbers[currentIndex])
+      setIsWinning(currentIndex === 2) // 845 is at index 2
+    }, 2000) // Change every 2 seconds
+
+    return () => clearInterval(interval)
+  }, [])
 
   // Sorting algorithms implementation
   const correctOrder = [
@@ -248,8 +269,9 @@ function App() {
     const shuffle = (array) => {
       const shuffled = [...array]
       for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+        const j = (Math.floor(Math.random() * (i + 1))[
+          (shuffled[i], shuffled[j])
+        ] = [shuffled[j], shuffled[i]])
       }
       return shuffled
     }
@@ -434,7 +456,11 @@ function App() {
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-background">
-          <div className="code-rain"></div>
+          <div className="code-rain">
+            <div className="binary-stream-1"></div>
+            <div className="binary-stream-2"></div>
+            <div className="binary-stream-3"></div>
+          </div>
           <div className="michigan-shape"></div>
         </div>
         <div className="hero-content">
@@ -685,10 +711,35 @@ function App() {
               <div className="project-image">
                 <div className="project-visual">
                   <div className="lottery-animation">
-                    <div className="lottery-ball">3</div>
-                    <div className="lottery-ball">4</div>
-                    <div className="lottery-ball">7</div>
-                    <div className="lottery-ball">9</div>
+                    <div className="winning-section">
+                      <div className="winning-label">Winning</div>
+                      <div className="winning-numbers">
+                        <div className="lottery-ball winning-ball">8</div>
+                        <div className="lottery-ball winning-ball">4</div>
+                        <div className="lottery-ball winning-ball">5</div>
+                      </div>
+                    </div>
+                    <div className="vs-divider">VS</div>
+                    <div className="ticket-section">
+                      <div className="ticket-label">Your Ticket</div>
+                      <div className="ticket-numbers">
+                        <div
+                          className={`lottery-ball ticket-ball ${isWinning ? 'winning' : ''}`}
+                        >
+                          {ticketNumbers[0]}
+                        </div>
+                        <div
+                          className={`lottery-ball ticket-ball ${isWinning ? 'winning' : ''}`}
+                        >
+                          {ticketNumbers[1]}
+                        </div>
+                        <div
+                          className={`lottery-ball ticket-ball ${isWinning ? 'winning' : ''}`}
+                        >
+                          {ticketNumbers[2]}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -721,11 +772,10 @@ function App() {
                   <span className="tech-tag">Selenium</span>
                 </div>
                 <div className="project-links">
-                  <a href="#" className="project-link primary">
-                    <span>View Project</span>
-                    <span className="link-arrow">→</span>
-                  </a>
-                  <a href="#" className="project-link secondary">
+                  <a
+                    href="https://github.com/HAWKSTER7337/ProjectDaisyUI"
+                    className="project-link primary"
+                  >
                     GitHub
                   </a>
                 </div>

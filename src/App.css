@@ -53,8 +53,126 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><pattern id="code" width="200" height="200" patternUnits="userSpaceOnUse"><text x="10" y="20" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011</text><text x="10" y="40" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000</text><text x="10" y="60" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100</text><text x="10" y="80" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111</text><text x="10" y="100" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000</text><text x="10" y="120" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001</text><text x="10" y="140" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001</text><text x="10" y="160" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001</text><text x="10" y="180" font-family="monospace" font-size="6" fill="%2300ff88" opacity="0.08">01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101</text></pattern></defs><rect width="200" height="200" fill="url(%23code)"/></svg>');
-  animation: codeFlow 15s linear infinite;
+  background: linear-gradient(
+    45deg,
+    transparent 49%,
+    rgba(0, 255, 136, 0.03) 50%,
+    transparent 51%
+  );
+  overflow: hidden;
+}
+
+/* Additional binary streams for layered effect */
+.code-rain .binary-stream-1::before {
+  content: '01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000\A 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100\A 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111\A 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000\A 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001\A 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001\A 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001\A 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101';
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'Courier New', 'Monaco', monospace;
+  font-size: 12px;
+  color: rgba(0, 136, 255, 0.08);
+  line-height: 28px;
+  word-spacing: 20px;
+  letter-spacing: 3px;
+  white-space: pre-wrap;
+  z-index: 1;
+  width: 100%;
+  height: 250%;
+  animation: binaryScroll 38s linear infinite;
+}
+
+.code-rain .binary-stream-2::before {
+  content: '01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011\A 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000\A 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100\A 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111\A 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000\A 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001\A 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001\A 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001';
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'Courier New', 'Monaco', monospace;
+  font-size: 12px;
+  color: rgba(0, 255, 136, 0.06);
+  line-height: 32px;
+  word-spacing: 22px;
+  letter-spacing: 2px;
+  white-space: pre-wrap;
+  z-index: 1;
+  width: 100%;
+  height: 250%;
+  animation: binaryScroll 42s linear infinite reverse;
+}
+
+.code-rain .binary-stream-3::before {
+  content: '01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001\A 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001\A 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101\A 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011\A 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000\A 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100\A 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111\A 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000';
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'Courier New', 'Monaco', monospace;
+  font-size: 11px;
+  color: rgba(255, 136, 0, 0.05);
+  line-height: 26px;
+  word-spacing: 18px;
+  letter-spacing: 2px;
+  white-space: pre-wrap;
+  z-index: 1;
+  width: 100%;
+  height: 250%;
+  animation: binaryScroll 35s linear infinite;
+  animation-delay: -15s;
+}
+
+.code-rain .binary-stream-1,
+.code-rain .binary-stream-2,
+.code-rain .binary-stream-3 {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.code-rain .binary-stream-1 {
+  left: 0%;
+}
+
+.code-rain .binary-stream-2 {
+  left: 33%;
+}
+
+.code-rain .binary-stream-3 {
+  left: 66%;
+}
+
+.code-rain::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 18px,
+    rgba(0, 255, 136, 0.08) 18px,
+    rgba(0, 255, 136, 0.08) 19px
+  );
+  animation: codeFlow 20s linear infinite;
+}
+
+.code-rain::after {
+  content: '01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011\A 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000\A 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100\A 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111\A 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000\A 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001\A 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001\A 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001\A 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101\A 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011\A 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000\A 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100\A 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111\A 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000\A 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001\A 01101110 01110011 01000001 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001\A 01101100 01100101 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001\A 01111000 00100000 01001000 01100001 01110111 01101011 01101001 01101110 01110011 01000001 01101100 01100101';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300%;
+  font-family: 'Courier New', 'Monaco', monospace;
+  font-size: 14px;
+  color: rgba(0, 255, 136, 0.12);
+  line-height: 32px;
+  word-spacing: 24px;
+  letter-spacing: 4px;
+  white-space: pre-wrap;
+  animation: binaryScroll 45s linear infinite;
+  z-index: 1;
 }
 
 .michigan-shape {
@@ -823,8 +941,96 @@
 
 .lottery-animation {
   display: flex;
-  gap: 1rem;
-  animation: lotterySpin 3s ease-in-out infinite;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.winning-section,
+.ticket-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.winning-label,
+.ticket-label {
+  color: #00ff88;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.winning-numbers {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.winning-ball {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(45deg, #00ff88, #0088ff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0a0a0a;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 8px rgba(0, 255, 136, 0.3);
+}
+
+.ticket-numbers {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ticket-ball {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0a0a0a;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
+  animation: ticketCycle 4s ease-in-out infinite;
+}
+
+.vs-divider {
+  color: #888;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.ticket-ball {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(45deg, #ff4444, #ff6666);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0a0a0a;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 8px rgba(255, 68, 68, 0.3);
+  transition: all 0.3s ease;
+}
+
+.ticket-ball.winning {
+  background: linear-gradient(45deg, #00ff88, #00cc66);
+  box-shadow: 0 4px 8px rgba(0, 255, 136, 0.3);
+  transform: scale(1.1);
 }
 
 .lottery-ball {
@@ -1306,6 +1512,15 @@
   }
 }
 
+@keyframes binaryScroll {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
 @keyframes pulse {
   0%,
   100% {
@@ -1363,6 +1578,35 @@
     flex-direction: column;
     gap: 1rem;
   }
+
+  /* Binary animation adjustments for mobile */
+  .code-rain::after {
+    font-size: 10px;
+    line-height: 24px;
+    word-spacing: 16px;
+    letter-spacing: 2px;
+  }
+
+  .code-rain .binary-stream-1::before,
+  .code-rain .binary-stream-2::before,
+  .code-rain .binary-stream-3::before {
+    font-size: 9px;
+    line-height: 20px;
+    word-spacing: 14px;
+    letter-spacing: 1px;
+  }
+
+  .code-rain .binary-stream-2::before {
+    line-height: 24px;
+    word-spacing: 16px;
+    letter-spacing: 1px;
+  }
+
+  .code-rain .binary-stream-3::before {
+    line-height: 20px;
+    word-spacing: 12px;
+    letter-spacing: 1px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1389,5 +1633,32 @@
 
   .algorithm-btn {
     min-width: 200px;
+  }
+
+  /* Further binary animation adjustments for small mobile */
+  .code-rain::after {
+    font-size: 8px;
+    line-height: 18px;
+    word-spacing: 12px;
+    letter-spacing: 1px;
+  }
+
+  .code-rain .binary-stream-1::before,
+  .code-rain .binary-stream-2::before,
+  .code-rain .binary-stream-3::before {
+    font-size: 7px;
+    line-height: 16px;
+    word-spacing: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .code-rain .binary-stream-2::before {
+    line-height: 18px;
+    word-spacing: 12px;
+  }
+
+  .code-rain .binary-stream-3::before {
+    line-height: 16px;
+    word-spacing: 8px;
   }
 }
